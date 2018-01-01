@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'database.php';
 
 if(!isset($_SESSION['logged_id'])) {
 
@@ -8,7 +9,6 @@ if(!isset($_SESSION['logged_id'])) {
         $login = filter_input(INPUT_POST, 'login'); //nowy sposob pobierania danych
         $password = filter_input(INPUT_POST, 'pass');
 
-        require_once 'database.php';
 
         $userquery = $db->prepare('SELECT id, password FROM admins WHERE login = :login');
         $userquery->bindValue(':login', $login, PDO:: PARAM_STR);
@@ -30,6 +30,10 @@ if(!isset($_SESSION['logged_id'])) {
         exit();
     }
 }
+
+$usersquery = $db->query('SELECT * FROM users');
+$users = $usersquery->fetchAll();
+
 
 
 ?>
@@ -56,7 +60,32 @@ if(!isset($_SESSION['logged_id'])) {
 
         <main>
             <article>
-
+                <table>
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            Wszystkich rekordów: <?=$usersquery->rowCount(); ?>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            E-mail
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        foreach($users as $user){
+                            echo "<tr><td>{$user['id']}</td><td>{$user['email']}</td></tr>";
+                        }
+                    ?>
+                    </tbody>
+                </table>
+                <br>
+                <p><a href="logout.php">Wyloguj się</a></p>
             </article>
         </main>
 

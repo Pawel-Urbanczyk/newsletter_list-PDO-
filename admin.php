@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if(isset($_SESSION['logged_id'])){
+    header('Location: list.php');
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -36,6 +41,16 @@ session_start();
                 <div>
                     <input type="submit" value="Zaloguj się!">
                 </div>
+
+                <?php
+                if(isset($_SESSION['bad_attempt'])){
+                    echo'
+                        <p>Niepoprawne dane logowania!</p>  
+                        ';
+                    unset($_SESSION['bad_attempt']);
+                }
+
+                ?>
 
             </form>
         </article>
