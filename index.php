@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -9,9 +12,9 @@
 
     <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css?family=Lobster|Open+Sans:400,700&amp;subset=latin-ext" rel="stylesheet">
-    <!--[if lt IE 9]>
+    <!--[if lt IE 9]
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <![endif]-->
+    ![endif]-->
 </head>
 <body>
     <div class="container">
@@ -23,9 +26,17 @@
             <article>
                 <form method="post" action="save.php">
                     <label>Podaj swój adres email: </label>
-                    <input type="email" name="email">
+                    <input type="email" name="email" <?= isset($_SESSION['given_email']) ? 'value="'.$_SESSION['given_email'].'"' : ''; //skrocony zapis warunku ?>>
                     <input type="submit" value="Zapisz się!">
+                    <?php
+                        if(isset($_SESSION['given_email'])){
+                            echo '<p>To nie jest poprawny adres!</p>';
+                            unset($_SESSION['given_email']);
+                        }
+                    ?>
                 </form>
+                <br>
+                <a href="admin.php">Zaloguj się do panelu admina</a>
             </article>
         </main>
     </div>
